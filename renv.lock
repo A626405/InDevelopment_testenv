@@ -113,16 +113,6 @@
       ],
       "Hash": "c232938949fcd8126034419cc529333a"
     },
-    "askpass": {
-      "Package": "askpass",
-      "Version": "1.2.1",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "sys"
-      ],
-      "Hash": "c39f4155b3ceb1a9a2799d700fbd4b6a"
-    },
     "base64enc": {
       "Package": "base64enc",
       "Version": "0.1-3",
@@ -214,16 +204,6 @@
       ],
       "Hash": "b21916dd77a27642b447374a5d30ecf3"
     },
-    "clipr": {
-      "Package": "clipr",
-      "Version": "0.8.0",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "utils"
-      ],
-      "Hash": "3f038e5ac7f41d4ac41ce658c85e3042"
-    },
     "colorspace": {
       "Package": "colorspace",
       "Version": "2.1-1",
@@ -266,43 +246,6 @@
         "utils"
       ],
       "Hash": "859d96e65ef198fd43e82b9628d593ef"
-    },
-    "credentials": {
-      "Package": "credentials",
-      "Version": "2.0.2",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "askpass",
-        "curl",
-        "jsonlite",
-        "openssl",
-        "sys"
-      ],
-      "Hash": "09fd631e607a236f8cc7f9604db32cb8"
-    },
-    "curl": {
-      "Package": "curl",
-      "Version": "6.1.0",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "8dd23d308c751efdf675124aad4bf5d7"
-    },
-    "desc": {
-      "Package": "desc",
-      "Version": "1.4.3",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "R",
-        "R6",
-        "cli",
-        "utils"
-      ],
-      "Hash": "99b79fcbd6c4d1ce087f5c5c758b384f"
     },
     "digest": {
       "Package": "digest",
@@ -398,21 +341,6 @@
       ],
       "Hash": "15e9634c0fcd294799e9b2e929ed1b86"
     },
-    "gert": {
-      "Package": "gert",
-      "Version": "2.1.4",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "askpass",
-        "credentials",
-        "openssl",
-        "rstudioapi",
-        "sys",
-        "zip"
-      ],
-      "Hash": "ae855ad6d7be20dd7b05d43d25700398"
-    },
     "ggplot2": {
       "Package": "ggplot2",
       "Version": "3.5.1",
@@ -437,34 +365,6 @@
         "withr"
       ],
       "Hash": "44c6a2f8202d5b7e878ea274b1092426"
-    },
-    "gh": {
-      "Package": "gh",
-      "Version": "1.4.1",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "R",
-        "cli",
-        "gitcreds",
-        "glue",
-        "httr2",
-        "ini",
-        "jsonlite",
-        "lifecycle",
-        "rlang"
-      ],
-      "Hash": "fbbbc48eba7a6626a08bb365e44b563b"
-    },
-    "gitcreds": {
-      "Package": "gitcreds",
-      "Version": "0.1.2",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "R"
-      ],
-      "Hash": "ab08ac61f3e1be454ae21911eb8bc2fe"
     },
     "glue": {
       "Package": "glue",
@@ -503,6 +403,20 @@
       ],
       "Hash": "24b224366f9c2e7534d2344d10d59211"
     },
+    "hms": {
+      "Package": "hms",
+      "Version": "1.1.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "lifecycle",
+        "methods",
+        "pkgconfig",
+        "rlang",
+        "vctrs"
+      ],
+      "Hash": "b59377caa7ed00fa41808342002138f9"
+    },
     "htmltools": {
       "Package": "htmltools",
       "Version": "0.5.8.1",
@@ -533,34 +447,6 @@
         "utils"
       ],
       "Hash": "d55aa087c47a63ead0f6fc10f8fa1ee0"
-    },
-    "httr2": {
-      "Package": "httr2",
-      "Version": "1.0.7",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "R6",
-        "cli",
-        "curl",
-        "glue",
-        "lifecycle",
-        "magrittr",
-        "openssl",
-        "rappdirs",
-        "rlang",
-        "vctrs",
-        "withr"
-      ],
-      "Hash": "5a76da345ed4f3e6430517e08441edaf"
-    },
-    "ini": {
-      "Package": "ini",
-      "Version": "0.3.1",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Hash": "6154ec2223172bce8162d4153cda21f7"
     },
     "isoband": {
       "Package": "isoband",
@@ -752,16 +638,6 @@
       ],
       "Hash": "ccbb8846be320b627e6aa2b4616a2ded"
     },
-    "openssl": {
-      "Package": "openssl",
-      "Version": "2.3.1",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Requirements": [
-        "askpass"
-      ],
-      "Hash": "37a7f0abce0349f5950ce49f38c7626b"
-    },
     "pillar": {
       "Package": "pillar",
       "Version": "1.10.1",
@@ -804,6 +680,30 @@
         "R"
       ],
       "Hash": "bd54ba8a0a5faded999a7aab6e46b374"
+    },
+    "prettyunits": {
+      "Package": "prettyunits",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R"
+      ],
+      "Hash": "6b01fc98b1e86c4f705ce9dcfd2f57c7"
+    },
+    "progress": {
+      "Package": "progress",
+      "Version": "1.2.3",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "R6",
+        "crayon",
+        "hms",
+        "prettyunits"
+      ],
+      "Hash": "f4625e061cb2865f111b47ff163a5ca6"
     },
     "promises": {
       "Package": "promises",
@@ -898,13 +798,6 @@
         "R"
       ],
       "Hash": "4c8415e0ec1e29f3f4f6fc108bef0144"
-    },
-    "rstudioapi": {
-      "Package": "rstudioapi",
-      "Version": "0.17.1",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Hash": "5f90cd73946d706cfe26024294236113"
     },
     "sass": {
       "Package": "sass",
@@ -1013,13 +906,6 @@
       ],
       "Hash": "960e2ae9e09656611e0b8214ad543207"
     },
-    "sys": {
-      "Package": "sys",
-      "Version": "3.4.3",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Hash": "de342ebfebdbf40477d0758d05426646"
-    },
     "tibble": {
       "Package": "tibble",
       "Version": "3.2.1",
@@ -1089,37 +975,16 @@
       ],
       "Hash": "c5f3c201b931cd6474d17d8700ccb1c8"
     },
-    "usethis": {
-      "Package": "usethis",
-      "Version": "3.1.0",
+    "tzdb": {
+      "Package": "tzdb",
+      "Version": "0.4.0",
       "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
+      "Repository": "CRAN",
       "Requirements": [
         "R",
-        "cli",
-        "clipr",
-        "crayon",
-        "curl",
-        "desc",
-        "fs",
-        "gert",
-        "gh",
-        "glue",
-        "jsonlite",
-        "lifecycle",
-        "purrr",
-        "rappdirs",
-        "rlang",
-        "rprojroot",
-        "rstudioapi",
-        "stats",
-        "tools",
-        "utils",
-        "whisker",
-        "withr",
-        "yaml"
+        "cpp11"
       ],
-      "Hash": "0d7f5ca181f9b1e68b217bd93b6cc703"
+      "Hash": "f561504ec2897f4d46f0c7657e488ae1"
     },
     "utf8": {
       "Package": "utf8",
@@ -1155,12 +1020,31 @@
       ],
       "Hash": "c826c7c4241b6fc89ff55aaea3fa7491"
     },
-    "whisker": {
-      "Package": "whisker",
-      "Version": "0.4.1",
+    "vroom": {
+      "Package": "vroom",
+      "Version": "1.6.5",
       "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Hash": "c6abfa47a46d281a7d5159d0a8891e88"
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "bit64",
+        "cli",
+        "cpp11",
+        "crayon",
+        "glue",
+        "hms",
+        "lifecycle",
+        "methods",
+        "progress",
+        "rlang",
+        "stats",
+        "tibble",
+        "tidyselect",
+        "tzdb",
+        "vctrs",
+        "withr"
+      ],
+      "Hash": "390f9315bc0025be03012054103d227c"
     },
     "withr": {
       "Package": "withr",
@@ -1185,20 +1069,6 @@
         "utils"
       ],
       "Hash": "b8acdf8af494d9ec19ccb2481a9b11c2"
-    },
-    "yaml": {
-      "Package": "yaml",
-      "Version": "2.3.10",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Hash": "51dab85c6c98e50a18d7551e9d49f76c"
-    },
-    "zip": {
-      "Package": "zip",
-      "Version": "2.3.1",
-      "Source": "Repository",
-      "Repository": "https://cloud.r-project.org",
-      "Hash": "fcc4bd8e6da2d2011eb64a5e5cc685ab"
     }
   }
 }

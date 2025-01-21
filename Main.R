@@ -1,20 +1,23 @@
-#r_version <- paste0("Depends: R (>= ", R.version$major, ".", R.version$minor, ")")
-#write(r_version, file = "data/DESCRIPTION", append = TRUE)
+options(verbose=F,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ")
 
-options(verbose=F,catch.script.errors=T,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ")
-
-if (!file.exists("renv.lock")) {
-  renv::init(profile="default",repos=c("https://cloud.r-project.org"),load=T,project=NULL)
+if (!file.exists("data/DESCRIPTION")) {
+  DESCRIPTION <- "Package: QMB6304FinalProject2024\nType: Project\nTitle: 'Data Exploration: 2013 AWS Honeypot DDoS Dataset'\nVersion: 1.0\nAuthors@R: c(person(given = 'Alexis', family = 'Leclerc', role = c('aut', 'cre'), email = 'alexisgilleslussoleclerc@gmail.com'))\nDescription: 'Data Exploration & Visualization. Utilizes git, SQLite3, Python, R, RShiny & Docker.'\nEncoding: UTF-8\nURL: https://github.com/A626405/QMB6304FinalProject2024\nImports:\nDBI,\nRSQLite,\ndplyr,\nggplot2,\nscales,\nshiny,\ntidyr,\nstringi,\nmapdata,\nreticulate,\nlubridate,\ntidyselect,\nvroom"
+  writeLines(DESCRIPTION, "DESCRIPTION")
 }
 
-renv::snapshot()
+r_version <- paste0("Depends: R (>= ", R.version$major, ".", R.version$minor, ")")
+write(r_version, file = "DESCRIPTION",append=T,sep="")
+rm(r_version)
+clrmem(3)
 
+if (!file.exists("renv.lock")) {
+  renv::init(profile="default",repos=c("https://cloud.r-project.org"),load=T)
+}else{
+  renv::snapshot(type="explicit")
+}
 
-#renv::restore(lockfile="renv.lock",prompt=F)
-#renv::use(lockfile="renv.lock",isolate=T,sandbox=T,attach=T)
-
-#source("renv/activate.R")
 source("code/R/functions.r")
+py_run_file("code/Python/functions.py")
 source("code/R/data_preprocessing.r")
 
 Rprof()

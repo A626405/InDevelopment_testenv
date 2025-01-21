@@ -1,3 +1,4 @@
+options(verbose=F,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ")
 clrmem(1)
 
 raw_data <- vroom::vroom("data/internal/AWS_Honeypot_marx-geo.csv",delim=',',quote = "\"",col_names=T,num_threads=as.numeric(parallel::detectCores(logical=T)-1),col_types =c("c","c","c","i","i","c","n","n","c","c","c","c"),col_select=c("datetime","host","proto","spt","dpt","srcstr","longitude","latitude","country","locale","localeabbr","postalcode"))
@@ -85,11 +86,13 @@ clrmem(2)
 
 working_data<-working_data |> mutate("service"=NULL,"Ports"=NULL,"year"=NULL) |> rename("service"="Services") |> group_by(datetime) |> arrange(.by_group=T)
 
-save("working_data",file="data/internal/working_data.RDA",compress="gzip")
+working_data_temp<-tempfile("working_data",fileext=".RDA",tmpdir="data/internal/")
+save(working_data,file=working_data_temp,compress="gzip")
+rm(working_data)
 clrmem(2)
 
 create_db("data/internal/databases.db")
-save_db("data/internal/working_data.RDA","working_data.RDA","data/internal/databases.db","databases","file_name")
-
-rm(working_data)
+save_db("data/internal/working_data2190136457f.RDA","working_data.RDA","data/internal/databases.db","databases","file_name")
+unlink(working_data_temp)
+rm(working_data_temp)
 clrmem(1)

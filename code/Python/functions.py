@@ -1,14 +1,5 @@
-<<<<<<< HEAD
 #Create A SQLite3 DB To Store Compressed RDA Datasets As Binary Entries. Indexed file_name. 
 def create_db(db_path):
-  import sqlite3
-
-=======
-import sqlite3
-
-#Create A SQLite3 DB To Store Compressed RDA Datasets As Binary Entries. Indexed file_name. 
-def create_db(db_path):
->>>>>>> 786451c9b5af241e2dd236a6dbc82ab35e420a97
   try:
       if db_path:
         
@@ -39,13 +30,13 @@ def create_db(db_path):
   except Exception as e:
         print(f"An unexpected error occurred: '{e}'")
         
+        
+        
+        
 #Write Compressed RDA Datasets To Binary Entries In A SQLite3 Table Of DBs.
 def write_db(rda_path,rda_name,db_path,tbl_name):
-<<<<<<< HEAD
   import sqlite3
 
-=======
->>>>>>> 786451c9b5af241e2dd236a6dbc82ab35e420a97
   try:
     if rda_path and rda_name and db_path and tbl_name:
       
@@ -75,13 +66,12 @@ def write_db(rda_path,rda_name,db_path,tbl_name):
   except Exception as e:
     print(f"An unexpected error occurred: '{e}'")
 
+
+
 #Read A Dataset Stored As A Binary Entry In A Table Of Databases In A SQLite3 DB.
 def read_db(path_to_db_char):
-<<<<<<< HEAD
-  import sqlite3
+    import sqlite3
 
-=======
->>>>>>> 786451c9b5af241e2dd236a6dbc82ab35e420a97
     try:
         if path_to_db_char is not None:
             conn = sqlite3.connect(path_to_db_char)
@@ -104,6 +94,8 @@ def read_db(path_to_db_char):
         print(f"An error occurred with SQLite: {e}")
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
+    
+    
     
 #Uses A DB To Match IPs & Fetch 'NA' Country Names.
 def get_country(ip):
