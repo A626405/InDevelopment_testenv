@@ -11,7 +11,7 @@ Description: 'Data Exploration & Visualization. Utilizes git, SQLite3, Python, R
 Encoding: UTF-8
 URL: 'https://github.com/A626405/QMB6304FinalProject2024'
 Imports:
-usethis,
+vroom,
 DBI,
 RSQLite,
 dplyr,
@@ -20,7 +20,6 @@ scales,
 shiny,
 tidyr,
 stringi,
-mapdata,
 reticulate,
 lubridate,
 tidyselect

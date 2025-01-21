@@ -20,11 +20,7 @@ clrmem(2)
 na_indices<-which(is.na(working_data$region))
 ips_to_check<-data.frame(cbind(working_data$datetime[na_indices],working_data$region[na_indices],working_data$srcstr[na_indices],working_data$date[na_indices],working_data$time[na_indices],working_data$spt[na_indices],working_data$proto[na_indices],working_data$host[na_indices]))
 
-library(reticulate)
-reticulate::use_python(python = "C:/Python312/python.exe")
-reticulate::py_run_file("code/Python/ipgeolocation.py")
-
-ips_to_check1<- sapply(ips_to_check[,3], py$get_country)
+ips_to_check1<- sapply(ips_to_check[,3], reticulate::py$get_country)
 rm(ips_to_check)
 clrmem(3)
 
@@ -39,13 +35,9 @@ ips_to_check2<-t(ips_to_check2)
 country_ips<-data.frame("ips"=ips,"cnames"=ips_to_check2)
 
 rm(ips_to_check2,na_indices)
-clrmem(3)
-
 py_run_string("reset = globals().clear()")
 py_run_string("del reset")
-
-.rs.unloadPackage("reticulate")
-unloadNamespace("reticulate")
+clrmem(3)
 
 matched_index <- match(country_ips[,1],working_data$srcstr)
 working_data$region <- replace(working_data$region,matched_index,country_ips[,2])
