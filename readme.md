@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 <center>
 
 <h1><b>Data Exploration & Visualization Project</b></h1>
@@ -90,11 +95,7 @@
 
 <!-- Data File 4 Details Section -->
 
-<h3>
-
-Details for Data File #4 (rawdata_step2.csv):
-
-</h3>
+<h3>Details for Data File #4 (rawdata_step2.csv):</h3>
 
 <ul>
 
@@ -102,9 +103,9 @@ Details for Data File #4 (rawdata_step2.csv):
 
 <li><b>Split Date into Year, Month, Day columns.</b></li>
 
-<li><b>All 'NA' Src & Dest. Ports ('NA' Port <-> ICMP Packets) Assigned Port Number '99999' To Replace NA Values.</b></li>
+<li><b>All 'NA' Src & Dest. Ports ('NA' Port \<-\> ICMP Packets) Assigned Port Number '99999' To Replace NA Values.</b></li>
 
-<li><b>Renamed/Replaced All "-" w/ "_" For All Categories in the 'Host' Column.</b></li>
+<li><b>Renamed/Replaced All "-" w/ "\_" For All Categories in the 'Host' Column.</b></li>
 
 <li><b>Reordered the Tables Accordingly.</b></li>
 
@@ -150,7 +151,6 @@ CASIMIAN2000. (2020, November 12). AWS Honeypot attack data [Dataset]. Kaggle. R
 title: "QMB6304_Final_Project_Fall_2024"
 author: "Alexis Leclerc"
 date: "2024-01-21"
-output: pdf_document
-description: Data Exploration & Visualization Project for QMB6304 Final Project Fall 2024 on the 2013 AWS Honeypot DDoS Network Traffic Dataset.
-subtitle: AWS_Honeypot_DDoS_Network_Traffic_Dataset
+description: "Data Exploration & Visualization Project for QMB6304"
+subtitle: "AWS_Honeypot_DDoS_Network_Traffic_Dataset"
 ---
