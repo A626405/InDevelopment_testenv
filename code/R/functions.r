@@ -1,5 +1,5 @@
-DESCRIPTIONS<-list('DBI','RSQLite','dplyr','ggplot2','scales','shiny','tidyr','stringi','mapdata','reticulate','lubridate','tidyselect')
-options(verbose=F,catch.script.errors=T,echo=F,repos=c("https://cloud.r-project.org","http://cran.rstudio.com"),askYesNo=c("y"),defaultPackages=T)
+#DESCRIPTIONS<-list('DBI','RSQLite','dplyr','ggplot2','scales','shiny','tidyr','stringi','mapdata','reticulate','lubridate','tidyselect')
+options(verbose=F,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ",repos="https://cloud.r-project.org")
 
 load_lb<-function(LibList){
   Lib <- as.list(LibList)
@@ -16,7 +16,6 @@ clrmem <- function(select_123){
   objs_to_remove <- objs_to_remove[!grepl("^renv", objs_to_remove)]
   rm(list = objs_to_remove, envir = .GlobalEnv)
   
-  options(verbose=F,catch.script.errors=T,echo=F,repos=c("https://cloud.r-project.org","http://cran.rstudio.com"))
   source("code/R/functions.r")
   
   load_lb(c("dplyr","tidyr"))
@@ -61,41 +60,40 @@ clrmem <- function(select_123){
 }'
 
 
-create_db <- function(db_path){
+create_db <- function(dbpath){
+  dbpath<-file.path(dbpath)
   if(!file.exists("data/internal/datasets.db")){
-    require(reticulate)
-    reticulate::py$create_db(db_path)
-    unloadNamespace("reticulate")
+    require(reticulate,attach.required=T)
+    reticulate::use_python(python="C:/Python312/python.exe",required=T)
+    reticulate::py$create_db(dbpath)
     clrmem(2)
   } else{
     print("The Database Already Exists.")
   }
-  clrmem(3)
 }
 
 save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
+  require(DBI,attach.required=T)
+  require(RSQLite,attach.required=T)
   conn <- DBI::dbConnect(RSQLite::SQLite(),db_path)
   current_dbs <- RSQLite::sqliteQuickColumn(conn,tbl_name,col_name)
+  current_dbs<-c(current_dbs)
   DBI::dbDisconnect(conn)
   
-  for(i in 1:length(current_dbs)){
-    if(rda_name != current_dbs[i]){
-      require(reticulate)
-      reticulate::py$write_db(rda_path,rda_name,db_path,tbl_name)
-      unloadNamespace("reticulate")
+    if(!(rda_name %in% current_dbs)){
+      require(reticulate,attach.required=T)
+      reticulate::use_python(python="C:/Python312/python.exe",required=T)
+      py$write_db(rda_path,rda_name,db_path,tbl_name)
       clrmem(2)
-      
+    
     }else{
       print("Error! Dataframe Already Exists In Database.")
-    }
   }
-  clrmem(2)
 }
 
 load_db <- function(path_to_db_char){
-  require(reticulate)
-  reticulate::py$read_db(path_to_db_char)
-  unloadNamespace("reticulate")
+  require(reticulate,attach.required=T)
+  reticulate::use_python(python="C:/Python312/python.exe",required=T)
   clrmem(2)
 }
 
