@@ -34,7 +34,7 @@ def create_db(db_path):
 
 
 
-#Write Compressed RDA Datasets To Binary Entries In A SQLite3 Table Of DBs.
+
 def write_db(rda_path,rda_name,db_path,tbl_name):
   import sqlite3
   
@@ -66,7 +66,11 @@ def write_db(rda_path,rda_name,db_path,tbl_name):
 
 
 
-#Read A Dataset Stored As A Binary Entry In A Table Of Databases In A SQLite3 DB.
+
+
+
+
+
 def read_db(path_to_db_char):
     import sqlite3
     
@@ -94,7 +98,11 @@ def read_db(path_to_db_char):
         print(f"An unexpected error occurred: {e}")
 
 
-#Uses A DB To Match IPs & Fetch 'NA' Country Names.
+
+
+
+
+
 def get_country(ip):
     import geoip2
     import geoip2.database

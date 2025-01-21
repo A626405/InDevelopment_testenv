@@ -1,6 +1,5 @@
 options(verbose=F,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ")
 clrmem(1)
-require(stringi,include.only=T,attach.required=T)
 
 raw_data <- vroom::vroom("data/internal/AWS_Honeypot_marx-geo.csv",delim=',',quote = "\"",col_names=T,num_threads=as.numeric(parallel::detectCores(logical=T)-1),col_types =c("c","c","c","i","i","c","n","n","c","c","c","c"),col_select=c("datetime","host","proto","spt","dpt","srcstr","longitude","latitude","country","locale","localeabbr","postalcode"))
 
@@ -21,10 +20,10 @@ clrmem(2)
 na_indices<-which(is.na(working_data$region))
 ips_to_check<-data.frame(cbind(working_data$datetime[na_indices],working_data$region[na_indices],working_data$srcstr[na_indices],working_data$date[na_indices],working_data$time[na_indices],working_data$spt[na_indices],working_data$proto[na_indices],working_data$host[na_indices]))
 
-require(reticulate,attach.required=T)
+library(reticulate)
 use_python(python="C:/Python312/python.exe",required=T)
 import("sqlite3",convert=T,delay_load=T)
-import("pandas",convert=T,delay_load=T)
+import("pandas",as="pd",convert=T,delay_load=T)
 import("geoip2",convert=T,delay_load=T)
 
 ips_to_check1<- sapply(ips_to_check[,3], py$get_country)
@@ -42,15 +41,12 @@ ips_to_check2<-t(ips_to_check2)
 country_ips<-data.frame("ips"=ips,"cnames"=ips_to_check2)
 
 rm(ips_to_check2,na_indices)
-py_run_string("reset = globals().clear()")
-py_run_string("del reset")
-unloadNamespace("reticulate")
 clrmem(3)
 
 matched_index <- match(country_ips[,1],working_data$srcstr)
 working_data$region <- replace(working_data$region,matched_index,country_ips[,2])
 rm(ips,matched_index,country_ips)
-clrmem(2)
+clrmem(3)
 
 day<-reorder( stringi::stri_sub(as.character(working_data$dates),from = 9L,length = 2,ignore_negative_length = F),working_data$datetime)
 
@@ -75,8 +71,7 @@ working_data <- working_data |> mutate("ports"=NULL,"portsnum"=NULL,"servindex"=
 rm(Ports,Services,servdict)
 clrmem(2)
 
-require(vroom,include.only=T,attach.required=T)
-portmatchdata<- vroom("data/external/service-names-port-numbers.csv",num_threads=as.numeric(parallel::detectCores(logical=T)-1),quote=c("\""),skip=1,delim=c(","),col_select=c(1:3),col_names=c("service","port","protocol"),col_types=c("c","c","c"),skip_empty_rows=T,na=c("",",,,","NA"),escape_double=T,progress=F)
+portmatchdata<- vroom::vroom("data/external/service-names-port-numbers.csv",num_threads=as.numeric(parallel::detectCores(logical=T)-1),quote=c("\""),skip=1,delim=c(","),col_select=c(1:3),col_names=c("service","port","protocol"),col_types=c("c","c","c"),skip_empty_rows=T,na=c("",",,,","NA"),escape_double=T,progress=F)
 portmatchdata<-na.omit(portmatchdata)
 clrmem(3)
 
@@ -87,9 +82,15 @@ clrmem(2)
 
 working_data<-working_data |> mutate("service"=NULL,"Ports"=NULL,"year"=NULL) |> rename("service"="Services") |> group_by(datetime) |> arrange(.by_group=T)
 
-save(working_data,file="data/internal/working_data.RDA",compress="gzip")
+save(working_data,file="data/internal/temp/working_data.RDA",compress="gzip")
 clrmem(2)
 rm(working_data)
 
-save_db("data/internal/working_data.RDA", "working_data.RDA", "data/internal/databases.db", "databases", "file_name")
+save_db("data/internal/temp/working_data.RDA","working_data.RDA","data/internal/databases.db","databases","file_name")
+clrmem(1)
+
+py_run_string("reset = globals().clear()")
+py_run_string("del reset")
+unloadNamespace("reticulate")
+file.remove("data/internal/temp/working_data.RDA")
 clrmem(1)

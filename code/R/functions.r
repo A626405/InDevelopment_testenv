@@ -63,9 +63,7 @@ clrmem <- function(select_123){
 create_db <- function(dbpath){
   dbpath<-file.path(dbpath)
   if(!file.exists("data/internal/datasets.db")){
-    require(reticulate,attach.required=T)
-    reticulate::use_python(python="C:/Python312/python.exe",required=T)
-    reticulate::py$create_db(dbpath)
+    py$create_db(dbpath)
     clrmem(2)
   } else{
     print("The Database Already Exists.")
@@ -81,8 +79,6 @@ save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
   DBI::dbDisconnect(conn)
   
     if(!(rda_name %in% current_dbs)){
-      require(reticulate,attach.required=T)
-      reticulate::use_python(python="C:/Python312/python.exe",required=T)
       py$write_db(rda_path,rda_name,db_path,tbl_name)
       clrmem(2)
     
@@ -92,8 +88,7 @@ save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
 }
 
 load_db <- function(path_to_db_char){
-  require(reticulate,attach.required=T)
-  reticulate::use_python(python="C:/Python312/python.exe",required=T)
+  py$read_db(path_to_db_char) 
   clrmem(2)
 }
 
