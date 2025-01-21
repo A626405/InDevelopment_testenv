@@ -1,5 +1,4 @@
 source("renv/activate.R")
-Package: QMB6304FinalProject2024
 Type: Project
 Title: 'Data Exploration: 2013 AWS Honeypot DDoS Dataset'
 Version: 1.0

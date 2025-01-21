@@ -5,19 +5,19 @@ if (!file.exists("data/DESCRIPTION")) {
   writeLines(DESCRIPTION, "DESCRIPTION")
 }
 
-r_version <- paste0("Depends: R (>= ", R.version$major, ".", R.version$minor, ")")
-write(r_version, file = "DESCRIPTION",append=T,sep="")
-rm(r_version)
-clrmem(3)
+#r_version <- paste0("Depends: R (>= ", R.version$major, ".", R.version$minor, ")")
+#write(r_version, file = "data/DESCRIPTION", append = TRUE)
+#rm(r_version)
+gc()
 
 if (!file.exists("renv.lock")) {
-  renv::init(profile="default",repos=c("https://cloud.r-project.org"),load=T)
+  renv::init(profile="default",repos="https://cloud.r-project.org",load=T)
 }else{
-  renv::snapshot(type="explicit")
+  renv::snapshot()
 }
 
 source("code/R/functions.r")
-py_run_file("code/Python/functions.py")
+reticulate::py_run_file("code/Python/functions.py")
 source("code/R/data_preprocessing.r")
 
-Rprof()
+#Rprof()
