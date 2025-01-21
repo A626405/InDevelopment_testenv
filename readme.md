@@ -1,12 +1,3 @@
----
-title: "QMB6304_Final_Project_Fall_2024"
-author: "Alexis Leclerc"
-date: "2024-01-21"
-output: pdf_document
-description: Data Exploration & Visualization Project for QMB6304 Final Project Fall 2024 on the 2013 AWS Honeypot DDoS Network Traffic Dataset.
-subtitle: AWS_Honeypot_DDoS_Network_Traffic_Dataset
----
-
 <center>
 
 <h1><b>Data Exploration & Visualization Project</b></h1>
@@ -154,3 +145,12 @@ CASIMIAN2000. (2020, November 12). AWS Honeypot attack data [Dataset]. Kaggle. R
 </h4>
 
 <br>
+
+---
+title: "QMB6304_Final_Project_Fall_2024"
+author: "Alexis Leclerc"
+date: "2024-01-21"
+output: pdf_document
+description: Data Exploration & Visualization Project for QMB6304 Final Project Fall 2024 on the 2013 AWS Honeypot DDoS Network Traffic Dataset.
+subtitle: AWS_Honeypot_DDoS_Network_Traffic_Dataset
+---
