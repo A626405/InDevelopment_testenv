@@ -20,17 +20,15 @@ dplyr,
 data.table,
 tidyr,
 reticulate,
-box,
-parallel,
-doParallel
+box
 
 
 Sys.setenv("renv.config.user.profile"=T)
 Sys.setenv("renv.config.sandbox.enabled"=T)
 Sys.setenv("renv.config.repos.override"=T)
 Sys.setenv("renv.config.auto.snapshot"=F)
-Sys.setenv("renv.config.updates.parallel"= parallel::detectCores()-1)
-Sys.setenv("renv.config.filebacked.cache"=F)
+Sys.setenv("renv.config.updates.parallel"= 6)
+Sys.setenv("renv.config.filebacked.cache"=T)
 Sys.setenv("renv.config.cache.symlinks"=T)
 Sys.setenv("renv.config.cache.enabled"=T)
 Sys.setenv("renv.config.activate.prompt"=T)
