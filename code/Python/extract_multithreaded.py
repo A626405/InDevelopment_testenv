@@ -17,7 +17,7 @@ def process_row(raw_data, output_file):
 
 def main():
     db_path = 'data/internal/databases.db'
-    output_file = "data/internal/workingdata_restored.RDA"
+    output_file = "data/internal/temp/workingdata_restored.RDA"
 
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()

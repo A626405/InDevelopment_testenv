@@ -68,10 +68,7 @@ def write_db(rda_path,rda_name,db_path,tbl_name):
 
 
 
-
-
-
-def read_db(path_to_db_char,file_name):
+'''def read_db(path_to_db_char,file_name):
     import sqlite3
     
     try:
@@ -89,9 +86,7 @@ def read_db(path_to_db_char,file_name):
     except sqlite3.Error as e:
         print(f"An error occurred with SQLite: '{e}'")
     except Exception as e:
-        print(f"An unexpected error occurred: '{e}'")
-
-
+        print(f"An unexpected error occurred: '{e}'")'''
 
 
 
