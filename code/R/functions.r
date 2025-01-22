@@ -6,6 +6,9 @@ load_lb<-function(LibList){
   for(i in 1:length(Lib)){
     require(Lib[[i]],character.only=T)}
 }
+load_lb<-memoise::memoise(load_lb,cache=cachem::cache_mem(max_size=18000))
+
+
 
 clrmem <- function(select_123){
   if(select_123==1){
@@ -15,6 +18,9 @@ clrmem <- function(select_123){
   objs_to_remove <- ls(all.names = TRUE, envir = .GlobalEnv)
   objs_to_remove <- objs_to_remove[!grepl("^renv", objs_to_remove)]
   rm(list = objs_to_remove, envir = .GlobalEnv)
+  
+  reticulate::py_run_string("reset = globals().clear()")
+  reticulate::py_run_string("del reset")
   
   source("code/R/functions.r")
   
@@ -65,10 +71,14 @@ create_db <- function(dbpath){
   if(!file.exists("data/internal/datasets.db")){
     py$create_db(dbpath)
     clrmem(2)
+    py_run_string("reset = globals().clear()")
+    py_run_string("del reset")
   } else{
     print("The Database Already Exists.")
   }
 }
+create_db<-memoise::memoise(create_db,cache=cachem::cache_mem(max_size=18000))
+
 
 save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
   require(DBI,attach.required=T)
@@ -82,15 +92,22 @@ save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
       py$write_db(rda_path,rda_name,db_path,tbl_name)
       clrmem(2)
     
+      reticulate::py_run_string("reset = globals().clear()")
+      reticulate::py_run_string("del reset")
+      
     }else{
       print("Error! Dataframe Already Exists In Database.")
   }
 }
+save_db<-memoise::memoise(save_db,cache=cachem::cache_mem(max_size=18000))
 
-load_db <- function(path_to_db_char,file_name){
+
+
+
+'load_db <- function(path_to_db_char,file_name){
   data=list(path_to_db_char,file_name)
   py$read_db(data$path_to_db_char,data$file_name) 
-}
+}'
 
 
 

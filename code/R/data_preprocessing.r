@@ -83,12 +83,15 @@ clrmem(2)
 working_data<-working_data |> mutate("service"=NULL,"Ports"=NULL,"year"=NULL) |> rename("service"="Services") |> group_by(datetime) |> arrange(.by_group=T)
 
 save(working_data,file="data/internal/temp/working_data.RDA",compress="gzip")
-clrmem(2)
 rm(working_data)
-
+clrmem(2)
 
 workdata_savedb = list(rda_path="data/internal/temp/working_data.RDA",rda_name="working_data.RDA",db_path="data/internal/databases.db",db_name="databases",file_name="file_name")
 save_db(workdata_savedb$rda_path,workdata_savedb$rda_name,workdata_savedb$db_path,workdata_savedb$db_name,workdata_savedb$file_name)
+
+
 file.remove("data/internal/temp/working_data.RDA")
 rm(workdata_savedb)
+reticulate::py_run_string("reset = globals().clear()")
+reticulate::py_run_string("del reset")
 clrmem(1)
