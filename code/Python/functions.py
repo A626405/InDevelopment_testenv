@@ -71,31 +71,25 @@ def write_db(rda_path,rda_name,db_path,tbl_name):
 
 
 
-def read_db(path_to_db_char):
+def read_db(path_to_db_char,file_name):
     import sqlite3
     
     try:
-        if path_to_db_char is not None:
+        if path_to_db_char and file_name is not None:
             conn = sqlite3.connect(path_to_db_char)
             cursor = conn.cursor()
 
-            cursor.execute("SELECT data FROM databases WHERE file_name = ?", (path_to_db_char,))
-            result = cursor.fetchone()
-
+            cursor.execute("SELECT * FROM databases WHERE file_name = ?", (file_name,))
+            cursor.execute(".save data")
             conn.close()
-
-            if result:
-                binary_data = result[0]
-                return binary_data
-            else:
-                print("No matching data found in the database.")
-                return None
+            conn.commit()
         else:
             print("Path, file name, or database path is missing.")
+            return None
     except sqlite3.Error as e:
-        print(f"An error occurred with SQLite: {e}")
+        print(f"An error occurred with SQLite: '{e}'")
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
+        print(f"An unexpected error occurred: '{e}'")
 
 
 

@@ -1,6 +1,19 @@
-source("")
 clrmem(1)
+source("code/R/functions.r")
+py_run_file("code/Python/functions.py")
+library(reticulate)
 
+
+
+path_to_db_char="data/internal/databases.db"
+file_name="working_data.RDA"
+loaddb_data=list("path_to_db_char"=path_to_db_char,"file_name"=file_name)
+gc()
+py$read_db(path_to_db_char,file_name)
+load_db(path_to_db_char,loaddb_data$file_name)
+rm(path_to_db_char,file_name)
+
+<-py$read_db(workdata_loadsepH$path_to_db_char,workdata_loadsepH$file_name)
 
 
 rm(cleaned)

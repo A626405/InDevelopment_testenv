@@ -87,9 +87,9 @@ save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
   }
 }
 
-load_db <- function(path_to_db_char){
-  py$read_db(path_to_db_char) 
-  clrmem(2)
+load_db <- function(path_to_db_char,file_name){
+  data=list(path_to_db_char,file_name)
+  py$read_db(data$path_to_db_char,data$file_name) 
 }
 
 
