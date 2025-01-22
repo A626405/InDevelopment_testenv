@@ -5,22 +5,16 @@ Version: 1.0
 Authors@R: c(
   person(given = "Alexis", family = "Leclerc",  
          role = c("aut", "cre"), 
-         email = "alexisgilleslussoleclerc@gmail.com")
+         email = "alexisglleclerc@gmail.com")
 )
 Description: 'Data Exploration & Visualization. Utilizes git, SQLite3, Python, R, RShiny & Docker.'
 Encoding: UTF-8
-URL: 'https://github.com/A626405/QMB6304FinalProject2024'
+URL: 'https://github.com/A626405/InDevelopment_testenv'
 Imports:
-vroom,
 DBI,
 RSQLite,
 dplyr,
-ggplot2,
-scales,
-shiny,
+data.table,
 tidyr,
-stringi,
-reticulate,
-lubridate,
-tidyselect
+reticulate
 Depends: R (>= 4.4.2)
