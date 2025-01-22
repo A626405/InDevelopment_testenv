@@ -83,7 +83,6 @@ portmatchdata<-na.omit(portmatchdata)
 
 portmatchdata$protocol <- toupper(portmatchdata$protocol)
 portmatchdata$port <- as.character(portmatchdata$port)
-working_data$port <- as.character(working_data$port)
 
 working_data<- dplyr::left_join(working_data,portmatchdata,by = c("port","protocol"))
 
