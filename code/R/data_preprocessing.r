@@ -6,6 +6,8 @@ clrmem(3)
 
 
 library(parallel)
+
+
 library(doParallel)
 ncores <- parallel::detectCores(logical = T) - 6
 # Create a cluster
