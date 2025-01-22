@@ -1,4 +1,4 @@
-source("renv/activate.R")
+# source("renv/activate.R")
 Type: Project
 Title: 'Data Exploration: 2013 AWS Honeypot DDoS Dataset'
 Version: 1.3
@@ -22,7 +22,7 @@ tidyr,
 reticulate,
 box,
 parallel,
-doParallel,
+doParallel
 
 
 Sys.setenv("renv.config.user.profile"=T)
