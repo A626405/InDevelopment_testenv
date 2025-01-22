@@ -1,5 +1,8 @@
-cachem::cache_mem(max_size=(512*1024^2),evict="fifo",max_age=1850,max_n=500000)
-object.size(clrmem)
+cache<-cachem::cache_mem(max_size=(512*1024^2),evict="fifo",max_age=600,max_n=500000)
+
+#cache$prune()
+#cache$reset()
+#object.size(clrmem)
 
 
 
