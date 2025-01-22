@@ -1,38 +1,40 @@
-cache$prune()
-clrmem(1)
-
+requireNamespace("reticulate",include.only=F,attach.required=T)
+requireNamespace("dplyr",include.only=F,attach.required=T)
+requireNamespace("tidyr",include.only=F,attach.required=T)
+library(reticulate)
+library(dplyr)
+library(tidyr)
+clrmem(3)
+selectedcols<-c("datetime,host,proto,spt,dpt,srcstr,country,latitude,longitude")
 raw_data <- data.table::fread("data/internal/AWS_Honeypot_marx-geo.csv",sep=",",quote="\"",header=T,select=c("datetime", "host", "proto", "spt", "dpt", "srcstr", "country", "locale", "localeabbr", "postalcode", "longitude", "latitude"), colClasses=list(character=c(1:5,8:13),integer=6:7,double=14:15,NULL=16),encoding="UTF-8",key=selectedcols,index=selectedcols,data.table=T,nThread= (parallel::detectCores()-1),nrows=451581)
+rm(selectedcols)
+gc()
 
 raw_data <- raw_data |> 
-  mutate("datetimes"= c(raw_data$datetime),"dates"= c(strptime(as.character(raw_data$datetime), format = "%m/%d/%y"))) |>
-  separate(datetimes, into = c("date", "time"), sep = " ") |>
-  mutate("host"=gsub("-", "_", raw_data$host),"dpt"=c(replace_na(raw_data$spt,99999)),"spt"=c(replace_na(raw_data$dpt,99999)))
+  dplyr::mutate("datetimes"= c(raw_data$datetime),"dates"= c(strptime(as.character(raw_data$datetime), format = "%m/%d/%y"))) |>
+  tidyr::separate(datetimes, into = c("date", "time"), sep = " ") |>
+  dplyr::mutate("host"=gsub("-", "_", raw_data$host),"dpt"= c(tidyr::replace_na(raw_data$spt,99999)),"spt"= c(tidyr::replace_na(raw_data$dpt,99999)))
 
-cache$prune()
 gc(F,T,T)
 
 working_data <- raw_data |>
   select(datetime,date,time,host,srcstr,proto,spt,dpt,longitude,latitude,country,dates) |>
   group_by() |>
   arrange(.by_group=T) |>
-  rename("region"="country","long"="longitude","lat"="latitude") 
+  dplyr::rename("region"="country","long"="longitude","lat"="latitude") 
 
 rm(raw_data)
-cache$prune()
 clrmem(2)
 
 na_indices<-which(is.na(working_data$region))
 ips_to_check<-data.frame(cbind(working_data$datetime[na_indices],working_data$region[na_indices],working_data$srcstr[na_indices],working_data$date[na_indices],working_data$time[na_indices],working_data$spt[na_indices],working_data$proto[na_indices],working_data$host[na_indices]))
 
-library(reticulate)
-use_python(python="C:/Python312/python.exe",required=T)
 import("sqlite3",convert=T,delay_load=T)
 import("pandas",as="pd",convert=T,delay_load=T)
 import("geoip2",convert=T,delay_load=T)
 
 ips_to_check1<- sapply(ips_to_check[,3], py$get_country)
 rm(ips_to_check)
-cache$prune()
 clrmem(3)
 
 ips_to_check2<- stringi::stri_list2matrix(ips_to_check1)
@@ -40,32 +42,28 @@ ips<-unlist(c(attributes(ips_to_check1)))
 ips<- stringi::stri_replace_last(ips,replacement = c(""),fixed = ".country")
 
 rm(ips_to_check1)
-cache$prune()
 clrmem(3)
 
 ips_to_check2<-t(ips_to_check2)
-country_ips<-data.frame("ips"=ips,"cnames"=ips_to_check2)
+country_ips<-data.frame("ips"=c(ips),"cnames"=c(ips_to_check2))
 
 rm(ips_to_check2,na_indices)
-cache$prune()
 clrmem(3)
 
 matched_index <- match(country_ips[,1],working_data$srcstr)
 working_data$region <- replace(working_data$region,matched_index,country_ips[,2])
 rm(ips,matched_index,country_ips)
-cache$prune()
 clrmem(3)
 
 day<-reorder( stringi::stri_sub(as.character(working_data$dates),from = 9L,length = 2,ignore_negative_length = F),working_data$datetime)
 
 working_data <- working_data |>
-  rename("port"="spt","protocol"="proto") |>
-  mutate("dpt" = NULL,"src" = NULL, "month"= c(months.Date(working_data$dates,abbreviate = T)),"day"=day) |>
-  arrange(datetime) |>
-  mutate("dates"=NULL)
+  dplyr::rename("port"="spt","protocol"="proto") |>
+  dplyr::mutate("dpt" = NULL,"src" = NULL, "month"= c(months.Date(working_data$dates,abbreviate = T)),"day"=day) |>
+  dplyr::arrange(datetime) |>
+  dplyr::mutate("dates"=NULL)
 
 rm(day)
-cache$prune()
 clrmem(3)
 
 Ports<-c("1433","99999","445","3389","80","56338","8080","22","3306","2193","135","53","23","5060","6666","443","3128","5900","19","1469","21","25","110","143","7","389","123","68","5432","1434","1900","5353","161","179","139","137","111","0","13","9","3","2","1","37","33","26","38","42")
@@ -75,64 +73,56 @@ servdict<-data.frame(cbind(c(1:48),Ports,Services),portsnum=as.numeric(Ports))
 
 working_data$servindex <- c(match(working_data$port,servdict$portsnum,nomatch = NA))
 working_data<-merge(working_data,servdict,no.dups = F,incomparables = "NA",by.x = "servindex",by.y = "V1",all = F)
-working_data <- working_data |> mutate("ports"=NULL,"portsnum"=NULL,"servindex"=NULL) 
+working_data<-working_data |> dplyr::mutate("ports"=NULL,"portsnum"=NULL,"servindex"=NULL) 
 
 rm(Ports,Services,servdict)
-cache$prune()
 clrmem(3)
 
-portmatchdata<- data.table::fread("data/external/service-names-port-numbers.csv",nThread= (parallel::detectCores(logical=T)-1),quote="\"",skip=1,sep=c(","),select=c(1:3),col.names=c("service","port","protocol"),colClasses=list(character=1:3,NULL=4:12),blank.lines.skip=T,na.strings=c("",",,,","NA"),header=T,key=c("port","service","protocol"),index=c("port","service","protocol"),data.table=T)
+portmatchdata<- data.table::fread("data/external/service-names-port-numbers.csv",nThread= (parallel::detectCores(logical=T)-1),quote="\"",skip=1,sep=c(","),select=c(1,2,3),col.names=c("service","port","protocol"),colClasses=list(character=c(1,2,3),NULL=4:12),blank.lines.skip=T,na.strings=c("",",,,","NA"),header=T,data.table=T)
 portmatchdata<-na.omit(portmatchdata)
-cache$prune()
-clrmem(3)
 
-working_data<-left_join(working_data,portmatchdata,by = c("port","protocol"))
+portmatchdata$protocol <- toupper(portmatchdata$protocol)
+portmatchdata$port <- as.character(portmatchdata$port)
+working_data$port <- as.character(working_data$port)
+
+working_data<- dplyr::left_join(working_data,portmatchdata,by = c("port","protocol"))
 
 rm(portmatchdata)
-cache$prune()
 clrmem(3)
 
-working_data<-working_data |> mutate("service"=NULL,"Ports"=NULL,"year"=NULL) |> rename("service"="Services") |> group_by(datetime) |> arrange(.by_group=T)
+working_data<-working_data |> dplyr::mutate("service"=NULL,"Ports"=NULL,"year"=NULL) |> dplyr::rename("service"="Services") |> dplyr::group_by(datetime) |> dplyr::arrange(.by_group=T)
 
 save(working_data,file="data/internal/temp/working_data.RDA",compress="gzip")
 rm(working_data)
-cache$prune()
 clrmem(3)
 
-workdata_savedb = list(rda_path="data/internal/temp/working_data.RDA",rda_name="working_data.RDA",db_path="data/internal/databases.db",db_name="databases",file_name="file_name")
+workdata_savedb = list(rda_path="data/internal/temp/working_data.RDA",rda_name="working_data.RDA",db_path="data/internal/datasets.db",db_name="main_datasets",file_name="file_name")
 save_db(workdata_savedb$rda_path,workdata_savedb$rda_name,workdata_savedb$db_path,workdata_savedb$db_name,workdata_savedb$file_name)
 
-file.remove("data/internal/temp/working_data.RDA")
 rm(workdata_savedb)
-cache$prune()
 clrmem(3)
-##################################################################
-cache$prune()
-clrmem(3)
-reticulate::py_run_file("code/Python/functions.py")
+
+py_run_file("code/Python/functions.py")
 source("code/R/functions.r")
-reticulate::py_run_file("code/Python/extract_multithreaded.py")
+py_run_file("code/Python/extract_multithreaded.py")
 
 load("data/internal/temp/workingdata_restored.RDA")
 gc()
 
-working_data <- working_data |>
-  select(datetime,date,time,host,srcstr,service,protocol,port,long,lat,region,month,day) |>
-  ungroup() |>
-  nest(.by=host,.key=NULL)
+hostarray <- working_data |>
+  dplyr::select(datetime,date,time,host,srcstr,service,protocol,port,long,lat,region,month,day) |>
+  dplyr::ungroup() |>
+  tidyr::nest(.by=host,.key=NULL)
 
-save(working_data,file="data/internal/temp/HostArray.RDA",compress="gzip")
-rm(working_data)
-cache$prune()
+save(hostarray,file="data/internal/temp/hostarray.RDA",compress="gzip")
+rm(working_data,hostarray)
 clrmem(3)
 
-workdata_savedb = list(rda_path="data/internal/temp/HostArray.RDA",rda_name="HostArray.RDA",db_path="data/internal/databases.db",db_name="databases",file_name="file_name")
-save_db(workdata_savedb$rda_path,workdata_savedb$rda_name,workdata_savedb$db_path,workdata_savedb$db_name,workdata_savedb$file_name)
-
-file.remove("data/internal/temp/HostArray.RDA")
-rm(workdata_savedb)
-cache$prune()
+hostaray_savedb = list(rda_path="data/internal/temp/hostarray.RDA",rda_name="hostarray.RDA",db_path="data/internal/datasets.db",db_name="main_datasets",file_name="file_name")
+save_db(hostaray_savedb$rda_path,hostaray_savedb$rda_name,hostaray_savedb$db_path,hostaray_savedb$db_name,hostaray_savedb$file_name)
+rm(hostaray_savedb)
 clrmem(3)
 
-cache$prune()
-clrmem(1)
+#file.remove("data/internal/temp/HostArray.RDA")
+#file.remove("data/internal/temp/working_data.RDA")
+#clrmem(1)

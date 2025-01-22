@@ -6,14 +6,14 @@ def create_db(db_path):
         cursor = conn.cursor()
 
         cursor.execute('''
-        CREATE TABLE IF NOT EXISTS databases (
+        CREATE TABLE IF NOT EXISTS main_datasets (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             file_name TEXT,
             data BLOB
         );''')
-        
-        
-        cursor.execute("CREATE INDEX file_name_idx1 ON databases(file_name);")
+        conn.commit()
+        cursor.execute("CREATE INDEX file_name_idx1 ON main_datasets(file_name);")
+        conn.commit()
 
         cursor.execute("VACUUM;")
         conn.commit()
@@ -28,8 +28,6 @@ def create_db(db_path):
         print(f"The specified file '{db_path}' does not exist.")
   except Exception as e:
         print(f"An unexpected error occurred: '{e}'")
-
-
 
 
 

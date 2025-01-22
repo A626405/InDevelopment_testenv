@@ -14,9 +14,18 @@ ggplot2,
 scales,
 shiny,
 tidyr,
-stringi,
-mapdata,
-reticulate,
-lubridate,
-tidyselect,
-vroom
+reticulate
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)
+Depends: R (>= 4.4.2)

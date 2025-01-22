@@ -16,13 +16,13 @@ def process_row(raw_data, output_file):
         print(f"Error decompressing data: {e}")
 
 def main():
-    db_path = 'data/internal/databases.db'
+    db_path = 'data/internal/datasets.db'
     output_file = "data/internal/temp/workingdata_restored.RDA"
 
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute("SELECT data FROM databases WHERE file_name = 'working_data.RDA';")
+    cursor.execute("SELECT data FROM main_datasets WHERE file_name = 'working_data.RDA';")
     rows = cursor.fetchall()
 
     with ThreadPoolExecutor() as executor:
