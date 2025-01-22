@@ -1,4 +1,15 @@
+Sys.setenv("renv.config.user.profile"=T)
+Sys.setenv("renv.config.sandbox.enabled"=T)
+Sys.setenv("renv.config.repos.override"=T)
+Sys.setenv("renv.config.auto.snapshot"=F)
+Sys.setenv("renv.config.updates.parallel"= parallel::detectCores()-1)
+Sys.setenv("renv.config.filebacked.cache"=F)
+Sys.setenv("renv.config.cache.symlinks"=T)
+Sys.setenv("renv.config.cache.enabled"=T)
+Sys.setenv("renv.config.activate.prompt"=T)
+
 options(verbose=F,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ",repos="https://cloud.r-project.org")
+
 gc(F,F,T)
 
 if (!file.exists("DESCRIPTION")) {
@@ -13,7 +24,7 @@ rm(r_version)
 gc()
 
 if (!file.exists("renv.lock")) {
-  renv::init(profile="default",repos="https://cloud.r-project.org",load=T)
+  renv::init(profile="default",repos="https://cloud.r-project.org",load=T,restart=T,)
 }else{
   renv::snapshot(type="explicit",update=T,dev=T)
 }
@@ -25,7 +36,9 @@ library(reticulate)
 library(dplyr)
 library(tidyr)
 
-py_run_file("code/Python/functions.py")
+reticulate::py_install(c("geoip2","SQLite3","gzip","io","pandas","concurrent.futures.ThreadPoolExecutor"),envname="r=reticulate",ignore_installed=F)
+
+reticulate::py_run_file("code/Python/functions.py")
 gc()
 source("code/R/functions.r")
 gc()

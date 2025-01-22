@@ -1,12 +1,12 @@
 requireNamespace("reticulate",include.only=F,attach.required=T)
 requireNamespace("dplyr",include.only=F,attach.required=T)
 requireNamespace("tidyr",include.only=F,attach.required=T)
-library(reticulate)
-library(dplyr)
-library(tidyr)
+requireNamespace("data.table",include.only=T,attach.required=T)
 clrmem(3)
+
 selectedcols<-c("datetime,host,proto,spt,dpt,srcstr,country,latitude,longitude")
 raw_data <- data.table::fread("data/internal/AWS_Honeypot_marx-geo.csv",sep=",",quote="\"",header=T,select=c("datetime", "host", "proto", "spt", "dpt", "srcstr", "country", "locale", "localeabbr", "postalcode", "longitude", "latitude"), colClasses=list(character=c(1:5,8:13),integer=6:7,double=14:15,NULL=16),encoding="UTF-8",key=selectedcols,index=selectedcols,data.table=T,nThread= (parallel::detectCores()-1),nrows=451581)
+
 rm(selectedcols)
 gc()
 
@@ -18,9 +18,9 @@ raw_data <- raw_data |>
 gc(F,T,T)
 
 working_data <- raw_data |>
-  select(datetime,date,time,host,srcstr,proto,spt,dpt,longitude,latitude,country,dates) |>
-  group_by() |>
-  arrange(.by_group=T) |>
+  dplyr::select(datetime,date,time,host,srcstr,proto,spt,dpt,longitude,latitude,country,dates) |>
+  dplyr::group_by() |>
+  dplyr::arrange(.by_group=T) |>
   dplyr::rename("region"="country","long"="longitude","lat"="latitude") 
 
 rm(raw_data)
@@ -29,11 +29,11 @@ clrmem(2)
 na_indices<-which(is.na(working_data$region))
 ips_to_check<-data.frame(cbind(working_data$datetime[na_indices],working_data$region[na_indices],working_data$srcstr[na_indices],working_data$date[na_indices],working_data$time[na_indices],working_data$spt[na_indices],working_data$proto[na_indices],working_data$host[na_indices]))
 
-import("sqlite3",convert=T,delay_load=T)
-import("pandas",as="pd",convert=T,delay_load=T)
-import("geoip2",convert=T,delay_load=T)
+reticulate::import("sqlite3",convert=T,delay_load=T)
+reticulate::import("pandas",as="pd",convert=T,delay_load=T)
+reticulate::import("geoip2",convert=T,delay_load=T)
 
-ips_to_check1<- sapply(ips_to_check[,3], py$get_country)
+ips_to_check1<- sapply(ips_to_check[,3], reticulate::py$get_country)
 rm(ips_to_check)
 clrmem(3)
 
@@ -55,11 +55,11 @@ working_data$region <- replace(working_data$region,matched_index,country_ips[,2]
 rm(ips,matched_index,country_ips)
 clrmem(3)
 
-day<-reorder( stringi::stri_sub(as.character(working_data$dates),from = 9L,length = 2,ignore_negative_length = F),working_data$datetime)
+day<-reorder( stringi::stri_sub(as.character(working_data$dates),from=9L,length=2,ignore_negative_length=F),working_data$datetime)
 
 working_data <- working_data |>
   dplyr::rename("port"="spt","protocol"="proto") |>
-  dplyr::mutate("dpt" = NULL,"src" = NULL, "month"= c(months.Date(working_data$dates,abbreviate = T)),"day"=day) |>
+  dplyr::mutate("dpt"=NULL,"src"=NULL,"month"=c(months.Date(working_data$dates,abbreviate=T)),"day"=day) |>
   dplyr::arrange(datetime) |>
   dplyr::mutate("dates"=NULL)
 
@@ -72,7 +72,7 @@ Services<-c("MSSQL_Server","ICMP","SMB","RDP","HTTP","UDP_Flood1","HTTPAlt","SSH
 servdict<-data.frame(cbind(c(1:48),Ports,Services),portsnum=as.numeric(Ports))
 
 working_data$servindex <- c(match(working_data$port,servdict$portsnum,nomatch = NA))
-working_data<-merge(working_data,servdict,no.dups = F,incomparables = "NA",by.x = "servindex",by.y = "V1",all = F)
+working_data<-merge(working_data,servdict,no.dups=F,incomparables="NA",by.x="servindex",by.y="V1",all=F)
 working_data<-working_data |> dplyr::mutate("ports"=NULL,"portsnum"=NULL,"servindex"=NULL) 
 
 rm(Ports,Services,servdict)
@@ -102,9 +102,9 @@ save_db(workdata_savedb$rda_path,workdata_savedb$rda_name,workdata_savedb$db_pat
 rm(workdata_savedb)
 clrmem(3)
 
-py_run_file("code/Python/functions.py")
+reticulate::py_run_file("code/Python/functions.py")
 source("code/R/functions.r")
-py_run_file("code/Python/extract_multithreaded.py")
+reticulate::py_run_file("code/Python/extract_multithreaded.py")
 
 load("data/internal/temp/workingdata_restored.RDA")
 gc()
