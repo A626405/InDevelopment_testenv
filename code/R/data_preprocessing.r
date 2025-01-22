@@ -109,8 +109,8 @@ clrmem(3)
 ##################################################################
 cache$prune()
 clrmem(3)
-source("code/R/functions.r")
 reticulate::py_run_file("code/Python/functions.py")
+source("code/R/functions.r")
 reticulate::py_run_file("code/Python/extract_multithreaded.py")
 
 load("data/internal/temp/workingdata_restored.RDA")
