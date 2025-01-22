@@ -18,11 +18,6 @@ if (!file.exists("renv.lock")) {
 reticulate::py_run_file("code/Python/functions.py")
 source("code/R/functions.r")
 source("code/R/data_preprocessing.r")
-
+clrmem(1)
 #Rprof()
 
-install.packages("wkb")
-
-library(wkb)
-
-wkb::hex2raw(hex=)
