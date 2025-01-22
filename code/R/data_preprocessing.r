@@ -1,6 +1,6 @@
-requireNamespace("reticulate",include.only=F,attach.required=T)
-requireNamespace("dplyr",include.only=F,attach.required=T)
-requireNamespace("tidyr",include.only=F,attach.required=T)
+requireNamespace("reticulate",include.only=T,attach.required=T)
+requireNamespace("dplyr",include.only=T,attach.required=T)
+requireNamespace("tidyr",include.only=T,attach.required=T)
 requireNamespace("data.table",include.only=T,attach.required=T)
 clrmem(3)
 

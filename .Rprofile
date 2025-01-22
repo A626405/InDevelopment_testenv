@@ -20,7 +20,9 @@ dplyr,
 data.table,
 tidyr,
 reticulate,
-box
+box,
+parallel,
+doParallel,
 
 
 Sys.setenv("renv.config.user.profile"=T)
