@@ -1,15 +1,14 @@
-requireNamespace("reticulate",include.only=F,attach.required=T)
-requireNamespace("dplyr",include.only=F,attach.required=T)
-requireNamespace("tidyr",include.only=F,attach.required=T)
-requireNamespace("data.table",include.only=T,attach.required=T)
+require("reticulate")
+require("dplyr")
+require("tidyr")
+require("data.table")
 clrmem(3)
 
 selectedcols<-c("datetime,host,proto,spt,dpt,srcstr,country,latitude,longitude")
 raw_data <- data.table::fread("data/internal/AWS_Honeypot_marx-geo.csv",sep=",",quote="\"",header=T,select=c("datetime", "host", "proto", "spt", "dpt", "srcstr", "country", "locale", "localeabbr", "postalcode", "longitude", "latitude"), colClasses=list(character=c(1:5,8:13),integer=6:7,double=14:15,NULL=16),encoding="UTF-8",key=selectedcols,index=selectedcols,data.table=T,nThread= (parallel::detectCores()-1),nrows=451581)
-
 rm(selectedcols)
 gc()
-
+data.table::frea
 raw_data <- raw_data |> 
   dplyr::mutate("datetimes"= c(raw_data$datetime),"dates"= c(strptime(as.character(raw_data$datetime), format = "%m/%d/%y"))) |>
   tidyr::separate(datetimes, into = c("date", "time"), sep = " ") |>

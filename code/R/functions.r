@@ -7,6 +7,8 @@ load_lb<-function(LibList){
 
 
 clrmem <- function(select_123){
+  require(reticulate,include.only=T)
+  
   if(select_123==1){
   gc(F,T,T)
   cat("\014")
@@ -18,7 +20,7 @@ clrmem <- function(select_123){
   gc(F,F,T)
   
   options(verbose=F,echo=F,renv.consent=T,PCRE_use_JIT=T,prompt="y ",repos="https://cloud.r-project.org")
-  py_run_file("code/Python/functions.py")
+  reticulate::py_run_file("code/Python/functions.py")
   source("code/R/functions.r")
   load_lb(c("dplyr","tidyr"))
   gc(F,T,T)
@@ -38,9 +40,10 @@ clrmem <- function(select_123){
 
 
 create_db <- function(dbpath){
+  require(reticulate,include.only=T)
   dbpath<-file.path(dbpath)
   if(!file.exists("data/internal/datasets.db")){
-    py$create_db(dbpath)
+    reticulate::py$create_db(dbpath)
     gc(F,T,T)
   }else{
     print("The Database Already Exists.")
@@ -48,14 +51,15 @@ create_db <- function(dbpath){
 }
 
 save_db <- function(rda_path,rda_name,db_path,tbl_name,col_name){
-  require(DBI,attach.required=T)
-  require(RSQLite,attach.required=T)
+  require(DBI,include.only=T)
+  require(RSQLite,include.only=T)
+  require(reticulate,include.only=T)
   conn <- DBI::dbConnect(RSQLite::SQLite(),db_path)
   current_dbs <- c(RSQLite::sqliteQuickColumn(conn,tbl_name,col_name))
   DBI::dbDisconnect(conn)
   gc(F,T,T)
   if(!(rda_name %in% current_dbs)){
-    py$write_db(rda_path,rda_name,db_path,tbl_name)
+    reticulate::py$write_db(rda_path,rda_name,db_path,tbl_name)
     gc(F,T,T)
   }else{print("Error! Dataframe Already Exists In Database.")}}
 #

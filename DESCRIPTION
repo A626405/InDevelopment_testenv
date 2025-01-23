@@ -14,18 +14,9 @@ ggplot2,
 scales,
 shiny,
 tidyr,
-reticulate
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
-Depends: R (>= 4.4.2)
+reticulate,
+jsonlite,
+data.table,
+parallel,
+doParallel
 Depends: R (>= 4.4.2)
