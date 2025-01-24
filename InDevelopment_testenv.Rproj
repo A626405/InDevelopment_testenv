@@ -12,3 +12,9 @@ Encoding: UTF-8
 
 RnwWeave: Sweave
 LaTeX: pdfLaTeX
+
+QuitChildProcessesOnExit: Yes
+
+MarkdownWrap: Sentence
+MarkdownReferences: Block
+MarkdownCanonical: Yes
